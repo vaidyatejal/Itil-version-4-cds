@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ITIL 4 Specialist: Create, Deliver and Support (CDS) - Master Study App</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --accent-color: #06b6d4; /* Vibrant teal */
+            --accent-glow: rgba(6, 182, 212, 0.15);
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+            --transition-speed: 0.25s;
+        }
+
+        .dark-mode {
+            --bg-color: #020617; /* Deepest blue-black */
+            --card-bg: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.25);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding-bottom: 80px; /* space for mobile sticky nav */
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        /* Top Progress Bar & Header */
+        header {
+            background: var(--primary-gradient);
+            color: #ffffff;
+            padding: 24px 20px;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(120deg, #ffffff 0%, #a5f3fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-title p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        .theme-toggle-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .theme-toggle-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.02);
+        }
+
+        .mode-switch-btn {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #3b82f6 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: opacity 0.2s, transform 0.1s;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+        }
+
+        .mode-switch-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-container {
+            max-width: 800px;
+            margin: 15px auto 0 auto;
+            background: rgba(255,255,255,0.15);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: var(--accent-color);
+            width: 0%;
+            height: 100%;
+            border-radius: 4px;
+            box-shadow: 0 0 8px var(--accent-color);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Search Bar Container */
+        .search-container {
+            max-width: 800px;
+            margin: 16px auto;
+            padding: 0 16px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            font-size: 0.95rem;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-main);
+            box-shadow: var(--shadow-sm);
+            outline: none;
+            transition: border var(--transition-speed), box-shadow var(--transition-speed);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' /%3E%3C/svg%3E");
+            background-size: 20px;
+            background-repeat: no-repeat;
+            background-position: 14px center;
+        }
+
+        .search-box:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        /* Main Content Container */
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 8px 16px;
+        }
+
+        /* Content Sections */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card styles for modules */
+        .module-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+        }
+
+        .module-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .dark-mode .module-title {
+            color: #38bdf8; /* Soft blue */
+        }
+
+        .module-check-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .module-check-container input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--success-color);
+        }
+
+        /* Typography inside cards */
+        h3 {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            margin-top: 24px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 10px;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            opacity: 0.9;
+        }
+
+        ul, ol {
+            margin-left: 22px;
+            margin-bottom: 18px;
+            font-size: 0.95rem;
+        }
+
+        li {
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        strong {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Analogy Boxes (Premium styling) */
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.04) 0%, rgba(59, 130, 246, 0.04) 100%);
+            border: 1px solid rgba(6, 182, 212, 0.15);
+            border-left: 5px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .analogy-box {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .analogy-title {
+            font-weight: 800;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+        }
+
+        /* Alert Boxes */
+        .alert-box {
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+        }
+
+        .alert-box-concept {
+            background-color: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            border-left: 5px solid #3b82f6;
+        }
+
+        .dark-mode .alert-box-concept {
+            background-color: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .alert-box-exam {
+            background-color: rgba(245, 158, 11, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.1);
+            border-left: 5px solid var(--warning-color);
+        }
+
+        .dark-mode .alert-box-exam {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .alert-box-success {
+            background-color: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            border-left: 5px solid var(--success-color);
+        }
+
+        .dark-mode .alert-box-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .alert-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+        }
+
+        /* Table styles */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        th {
+            background-color: rgba(0,0,0,0.02);
+            font-weight: 700;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .dark-mode th {
+            background-color: rgba(255,255,255,0.03);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Glossary Accordion */
+        .accordion-item {
+            background: var(--card-bg);
+            border-radius: 14px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: border-color var(--transition-speed);
+        }
+
+        .accordion-item:hover {
+            border-color: var(--accent-color);
+        }
+
+        .accordion-header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            user-select: none;
+            background: var(--card-bg);
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-muted);
+        }
+
+        .accordion-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-top: 0px solid var(--border-color);
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(180deg);
+            color: var(--accent-color);
+        }
+
+        .accordion-item.open .accordion-content {
+            padding: 14px 20px 18px 20px;
+            max-height: 400px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Quiz Styles */
+        .quiz-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .quiz-score-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .question-card {
+            display: none;
+        }
+
+        .question-card.active {
+            display: block;
+            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .question-number {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            letter-spacing: -0.015em;
+        }
+
+        .options-list {
+            list-style: none;
+            margin-left: 0;
+            margin-bottom: 24px;
+        }
+
+        .option-item {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .option-item:hover {
+            border-color: var(--accent-color);
+            background: var(--accent-glow);
+        }
+
+        .option-prefix {
+            font-weight: 800;
+            color: var(--accent-color);
+            min-width: 22px;
+        }
+
+        .option-item.selected {
+            border-color: var(--accent-color);
+            background: var(--accent-glow);
+            font-weight: 600;
+            box-shadow: 0 0 0 1px var(--accent-color);
+        }
+
+        .option-item.correct {
+            border-color: var(--success-color) !important;
+            background-color: rgba(16, 185, 129, 0.08) !important;
+            color: #065f46;
+            font-weight: 600;
+        }
+        .dark-mode .option-item.correct {
+            color: #34d399;
+        }
+
+        .option-item.incorrect {
+            border-color: var(--error-color) !important;
+            background-color: rgba(239, 68, 68, 0.08) !important;
+            color: #991b1b;
+        }
+        .dark-mode .option-item.incorrect {
+            color: #f87171;
+        }
+
+        .feedback-box {
+            display: none;
+            background-color: rgba(0,0,0,0.01);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--text-muted);
+        }
+
+        .feedback-box.visible {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .quiz-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .btn {
+            background-color: var(--text-main);
+            color: var(--card-bg);
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background-color: var(--border-color);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            opacity: 0.6;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(0,0,0,0.02);
+        }
+
+        .dark-mode .btn-outline:hover {
+            background-color: rgba(255,255,255,0.03);
+        }
+
+        /* Sticky Bottom Navigation */
+        nav.bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            background-color: rgba(255, 255, 255, 0.85);
+            transition: background-color var(--transition-speed);
+        }
+
+        .dark-mode nav.bottom-nav {
+            background-color: rgba(15, 23, 42, 0.85);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 10px;
+            transition: color var(--transition-speed), background var(--transition-speed);
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            transition: transform 0.2s;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+
+        .nav-item.active svg {
+            transform: scale(1.1);
+        }
+
+        /* Search highlights */
+        .highlight {
+            background-color: rgba(6, 182, 212, 0.25);
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+
+        /* Responsive modifications */
+        @media (min-width: 800px) {
+            body {
+                padding-top: 20px;
+            }
+            header {
+                max-width: 800px;
+                margin: 0 auto 20px auto;
+                border-radius: 20px;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+                padding-bottom: 0;
+                font-size: 11pt;
+            }
+            .bottom-nav, .theme-toggle-btn, .progress-container, .search-container, .quiz-actions, .module-check-container, .analogy-title {
+                display: none !important;
+            }
+            .tab-content {
+                display: block !important;
+            }
+            .module-card {
+                box-shadow: none;
+                border: none;
+                border-bottom: 2px solid #ccc;
+                page-break-inside: avoid;
+            }
+            h1, h2, h3 {
+                page-break-after: avoid;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Header & Overall Progress -->
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <h1>ITIL 4 Specialist</h1>
+                <p>Create, Deliver and Support (CDS)</p>
+            </div>
+            <div class="header-actions">
+                <a href="./creative.html" class="mode-switch-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <span>Creative Mode</span>
+                </a>
+                <button class="theme-toggle-btn" id="theme-toggle">
+                    <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                    <span id="theme-text">Dark</span>
+                </button>
+            </div>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="overall-progress"></div>
+        </div>
+    </header>
+
+    <!-- Global Search -->
+    <div class="search-container" id="search-section">
+        <input type="text" class="search-box" id="search-input" placeholder="Search key syllabus terms & analogies...">
+    </div>
+
+    <!-- Main Navigation Content -->
+    <main>
+        
+        <!-- ================= STUDY GUIDE TAB ================= -->
+        <section id="guide-tab" class="tab-content active">
+
+            <!-- MODULE 1 -->
+            <article class="module-card" data-module="1">
+                <div class="module-header">
+                    <h2 class="module-title">1. Organization and Culture</h2>
+                    <label class="module-check-container">
+                        <input type="checkbox" class="module-complete-check" data-id="mod1">
+                        <span>Completed</span>
+                    </label>
+                </div>
+                
+                <p>ITIL 4 CDS focuses heavily on the human, social, and cultural elements required to create and support services. The best tools fail without a structured, healthy team culture.</p>
+
+                <h3>1.1 Organizational Structures</h3>
+                <p>CDS identifies four basic structures. You must understand their direct operational trade-offs:</p>
+                <ul>
+                    <li><strong>Functional Structure:</strong> Grouped strictly by technical specialties (e.g., separate teams for DBAs, Systems, Network, Developers).
+                        <br><em>Pros:</em> Extreme depth of expertise, clear career progression within the specialty.
+                        <br><em>Cons:</em> High communication silos, lack of empathy for customer experience, slow resolution hand-offs.
+                    </li>
+                    <li><strong>Divisional Structure:</strong> Grouped by business lines, geographical locations, or products (e.g., Team Retail, Team Commercial Banking).
+                        <br><em>Pros:</em> Heavy customer focus, rapid customized delivery.
+                        <br><em>Cons:</em> Inefficient duplication of roles and tools, fragmented technical standards across divisions.
+                    </li>
+                    <li><strong>Matrix Structure:</strong> Staff report to both a functional manager (for guild training) and project/product managers (for day-to-day work).
+                        <br><em>Pros:</em> Extremely flexible resource utilization.
+                        <br><em>Cons:</em> Double-reporting creates major friction and conflicting priorities for employees.
+                    </li>
+                    <li><strong>Flat Structure:</strong> Minimal or no middle management levels. Promotes fast, autonomous decision-making.
+                        <br><em>Pros:</em> High employee ownership, rapid responses.
+                        <br><em>Cons:</em> Extremely difficult to scale as the organization grows.
+                    </li>
+                </ul>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                        Real-World Analogy: Building a House
+                    </div>
+                    <p>Imagine construction models:
+                    <br>• <strong>Functional:</strong> You hire one separate plumbing firm, one electrical firm, and one carpentry firm. They do their work independently. The quality is stellar, but because they don't coordinate, the plumber punches holes in the carpenter's drywall, leading to huge delays and finger-pointing.
+                    <br>• <strong>Divisional:</strong> You build a custom residential suburb and assign full, standalone teams to each home. House A team has its own plumber and electrician; House B has its own too. It's fast, but you pay double because you had to buy separate heavy machinery and tools for every single house.
+                    </p>
+                </div>
+
+                <h3>1.2 Integrated and Collaborative Teams</h3>
+                <p>To establish flow and break silos, organizations must build:</p>
+                <ul>
+                    <li><strong>T-Shaped Skills:</strong> Professionals who have deep technical expertise in one specific area (the vertical bar of the 'T') combined with broad lateral working knowledge of adjacent technologies and general business priorities (the horizontal bar). This allows team members to step outside their direct role and support colleagues during bottlenecks.</li>
+                    <li><strong>Cross-Functional Teams:</strong> Multi-disciplinary groups that hold all skills needed to build, release, and support a product end-to-end, drastically reducing cross-team handovers.</li>
+                </ul>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                        Real-World Analogy: The Emergency Room (ER)
+                    </div>
+                    <p>An ER nurse is a classic <strong>T-shaped professional</strong>. Their deep specialty is emergency nursing (triage, critical care). However, they also possess broad lateral knowledge of simple pharmacy, lab operations, radiology, and customer relations. If the ER becomes overwhelmed with trauma cases, they can swarm and assist doctors or radiologists immediately, rather than waiting in an isolated silo.</p>
+                </div>
+
+                <div class="alert-box alert-box-concept">
+                    <div class="alert-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:18px;height:18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Psychological Safety & Servant Leadership
+                    </div>
+                    <p>Coined by Amy Edmondson, **Psychological Safety** is a shared cultural belief that a team is safe for interpersonal risk-taking (e.g., admitting mistakes, raising concerns, asking questions, or suggesting new ideas without fear of punishment, ridicule, or career damage).
+                    <br><br>CDS highlights that psychological safety is absolutely mandatory to sustain a continuous improvement culture. To foster this, managers must practice **Servant Leadership**—focusing on supporting the team, clearing operational blockers, securing resources, and delegating authority, rather than executing traditional command-and-control.</p>
+                </div>
+
+                <h3>1.3 Outcome-Based Metrics & Watermelons</h3>
+                <p>ITIL 4 CDS urges organizations to shift their measuring focus away from mere outputs to actual outcomes:</p>
+                <ul>
+                    <li><strong>Outputs:</strong> What the team does or builds (e.g., "We closed 250 tickets", "We deployed 5 software updates"). Outputs are easy to measure but do not indicate real value.</li>
+                    <li><strong>Outcomes:</strong> The business results realized by the customer (e.g., "Online checkout downtime was reduced, allowing 12% more sales transactions").</li>
+                </ul>
+
+                <div class="alert-box alert-box-exam">
+                    <div class="alert-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:18px;height:18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                        Critical Exam Concept: Watermelon Metrics
+                    </div>
+                    <p>A **Watermelon Metric** describes a service level indicator that appears **Green on the outside** (all technical SLA metrics are fully met, such as 99.9% server availability or 15-minute support response times) but is actually **Red on the inside** (users are extremely unhappy because the core application is slow, frustrating to navigate, or the overall user experience is terrible).
+                    <br><br><strong>Real-World Analogy:</strong> A restaurant guarantees that your food will be delivered to your table in under 10 minutes (SLA). The waiter delivers your food in 8 minutes, so the dashboard is "green". However, the food is completely cold and burnt. The metric is green, but the outcome is a failure because the customer is angry.</p>
+                </div>
+            </article>
+
+            <!-- MODULE 2 -->
+            <article class="module-card" data-module="2">
+                <div class="module-header">
+                    <h2 class="module-title">2. Information and Technology</h2>
+                    <label class="module-check-container">
+                        <input type="checkbox" class="module-complete-check" data-id="mod2">
+                        <span>Completed</span>
+                    </label>
+                </div>
+
+                <p>Information and technology are the lifeblood of modern service management. CDS focuses on tools that increase visibility, reduce routine human labor, and predict issues.</p>
+
+                <h3>2.1 Integrated Toolchains & Advanced Analytics</h3>
+                <p>Traditional IT departments operated with isolated systems (e.g., the service desk tool didn't communicate with the developer's bug tracker). CDS mandates an **integrated toolchain**. Continuous data sharing across deployment pipelines, test platforms, configuration databases (CMDB), and the service desk provides rich, end-to-end data pipelines. This allows managers to run advanced predictive analytics, spotting performance bottlenecks before they turn into major outages.</p>
+
+                <h3>2.2 RPA, AI, Machine Learning, and AIOps</h3>
+                <p>Modern technology transforms how operational support is delivered:</p>
+                <ul>
+                    <li><strong>Robotic Process Automation (RPA):</strong> Software agents programmed to execute high-volume, repetitive, rules-based tasks without human intervention.
+                        <br><em>Typical CDS cases:</em> Resetting passwords, automated server log checking, standard Active Directory provisioning.
+                    </li>
+                    <li><strong>AI & Machine Learning (ML):</strong> Systems that recognize complex patterns and make intelligent assessments.
+                        <br><em>Typical CDS cases:</em> Natural language processing (NLP) chatbots triage tier-1 user support; ML automatically correlates incident history to route new tickets to the right team.
+                    </li>
+                    <li><strong>AIOps (Artificial Intelligence for IT Operations):</strong> Applying machine learning directly to system logs and telemetry.
+                        <br><em>Typical CDS cases:</em> Correlating thousands of simultaneous background system alerts, filtering out trivial noise, and identifying real system anomalies to prevent massive service disruptions.
+                    </li>
+                </ul>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                        Real-World Analogy: The Soda Factory
+                    </div>
+                    <p>Let's map these tools to a beverage production line:
+                    <br>• <strong>RPA:</strong> An automated mechanical arm that picks up a cap and screws it onto a bottle. It's incredibly fast at doing that one exact repetitive task. But if a bottle arrives slightly dented or misaligned, the RPA bot jams because it has no "brain" to adjust (rules-based only).
+                    <br>• <strong>AI/ML:</strong> A smart camera that takes a picture of each passing bottle, compares it to thousands of images, and instantly decides if the bottle is "clean", "scratched", or "faulty" (pattern recognition).
+                    <br>• <strong>AIOps:</strong> A central smart control system monitoring the factory's background sounds, vibrations, temperature, and electrical draw. It correlates a microscopic drop in air pressure in Room 3 with a slight squeak in Conveyor 2, predicting that a motor will fail in 3 hours, and automatically dispatches a repair request.
+                    </p>
+                </div>
+
+                <h3>2.3 CI/CD Pipelines</h3>
+                <p><strong>Continuous Integration (CI)</strong> automatically compiles and runs automated unit tests whenever developers commit code changes. <strong>Continuous Delivery (CD)</strong> automates the deployment of tested code into production or staging environments, ensuring releases are fast, frequent, and safe.</p>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                        Real-World Analogy: Newspaper Printing
+                    </div>
+                    <p>Instead of writing all articles and printing a massive book once a year (traditional waterfall release), journalists write articles, automated digital fact-checkers and editors check the grammar and verify facts instantly (Continuous Integration), and the articles are continuously streamed to online readers every hour (Continuous Delivery).</p>
+                </div>
+            </article>
+
+            <!-- MODULE 3 -->
+            <article class="module-card" data-module="3">
+                <div class="module-header">
+                    <h2 class="module-title">3. Service Value Streams</h2>
+                    <label class="module-check-container">
+                        <input type="checkbox" class="module-complete-check" data-id="mod3">
+                        <span>Completed</span>
+                    </label>
+                </div>
+
+                <p>A **Value Stream** is a series of specific, sequential steps an organization undertakes to co-create value with consumers. The **Service Value Chain (SVC)** is the general operating model consisting of 6 core activities (Plan, Improve, Engage, Design & Transition, Obtain/Build, Deliver & Support).</p>
+
+                <div class="alert-box alert-box-concept">
+                    <div class="alert-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:18px;height:18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
+                        Service Value Chain vs. Value Streams
+                    </div>
+                    <p><strong>Real-World Analogy:</strong> The **Service Value Chain** is like a fully-equipped professional kitchen. It contains all the tools, appliances, and general capabilities (stoves, ovens, refrigerators, blenders, chefs).
+                    <br><br>A **Value Stream** is a specific **recipe** used to prepare a dish. To make a chocolate cake (deliver a new service), you combine the kitchen capabilities in a precise sequence: get ingredients from the fridge (Obtain/Build), mix them (Design), bake in the oven (Transition), and serve to the customer (Deliver & Support).</p>
+                </div>
+
+                <h3>3.1 Value Stream for a New Service (Step-by-Step)</h3>
+                <p>To design, develop, and transition a brand new service from demand to live value, an organization walks through the value chain:</p>
+                <ol>
+                    <li><strong>Engage:</strong> Discuss requirements directly with stakeholders, understand user pain points, and define the service vision.</li>
+                    <li><strong>Plan:</strong> Establish the project budget, assess the business case, and allocate core resources.</li>
+                    <li><strong>Design & Transition:</strong> Architect the service components, design the user interfaces, and outline target service level targets.</li>
+                    <li><strong>Obtain / Build:</strong> Write the application code, integrate third-party APIs, or configure database instances.</li>
+                    <li><strong>Design & Transition (again):</strong> Test the build in staging, validate security compliance, and deploy code to production.</li>
+                    <li><strong>Deliver & Support:</strong> Expose the new features to users (Release), establish ongoing operational monitoring, and provide the service desk with user training manuals.</li>
+                </ol>
+
+                <h3>3.2 Value Stream for User Support (Incident Management)</h3>
+                <p>When a customer encounters a technical error or outage, restoring service follows a specific flow:</p>
+                <ol>
+                    <li><strong>Engage:</strong> The user reports the outage via phone or self-service portal. The Service Desk registers and prioritizes the ticket.</li>
+                    <li><strong>Deliver & Support:</strong> Operational support agents check the Knowledge base for documented workarounds. If a simple fix exists, they apply it immediately.</li>
+                    <li><strong>Obtain / Build (If needed):</strong> If the issue requires a technical hotfix or physical replacement component, a developer builds the patch or the procurement team sources the hardware.</li>
+                    <li><strong>Design & Transition:</strong> The technical patch is deployed or the hardware is configured to match organizational security standards.</li>
+                    <li><strong>Deliver & Support:</strong> The service is restored, the support agent verifies application access with the user, and closes the ticket.</li>
+                    <li><strong>Improve / Engage:</strong> Gather user satisfaction feedback, and update knowledge records to facilitate rapid future resolutions.</li>
+                </ol>
+            </article>
+
+            <!-- MODULE 4 -->
+            <article class="module-card" data-module="4">
+                <div class="module-header">
+                    <h2 class="module-title">4. Core ITIL Practices in CDS</h2>
+                    <label class="module-check-container">
+                        <input type="checkbox" class="module-complete-check" data-id="mod4">
+                        <span>Completed</span>
+                    </label>
+                </div>
+
+                <p>Practices are integrated sets of organizational resources (people, processes, technology, partners) designed to perform specific work. You must know how they contribute across value streams.</p>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Practice</th>
+                                <th>Key Role in Value Streams</th>
+                                <th>Real-World Analogy / Concept</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Service Design</strong></td>
+                                <td>Ensures products are fit for purpose (utility) and fit for use (warranty) before build.</td>
+                                <td>Architectural blueprints for a new skyscraper.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Software Development</strong></td>
+                                <td>Manages code quality, writing, and repository version control.</td>
+                                <td>The authors writing the chapters of a book.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Deployment Management</strong></td>
+                                <td>Technically moves code, hardware, or files to a target environment.</td>
+                                <td>Moving boxes of books from the printing factory to a warehouse.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Release Management</strong></td>
+                                <td>Makes new features commercially available for user consumption.</td>
+                                <td>Opening the warehouse doors and putting the books on shelves for customers to buy.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Service Validation & Testing</strong></td>
+                                <td>Verifies that deployed releases meet all quality and performance standards.</td>
+                                <td>Running a crash-test on a car before selling it.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Change Enablement</strong></td>
+                                <td>Assesses change risks, scheduling, and approvals to prevent outages.</td>
+                                <td>An airport control tower scheduling plane take-offs.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Service Desk</strong></td>
+                                <td>Captures and handles user interactions; acts as single point of contact.</td>
+                                <td>A hotel concierge desk.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Incident Management</strong></td>
+                                <td>Restores normal service operation as quickly as possible. Focuses on speed.</td>
+                                <td>A paramedic team stabilizing a patient.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Problem Management</strong></td>
+                                <td>Identifies root causes of recurring incidents and defines workarounds. Focuses on cause.</td>
+                                <td>Medical researchers studying a virus to find a permanent vaccine.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Knowledge Management</strong></td>
+                                <td>Maintains and shares accurate operational information to support staff and self-service.</td>
+                                <td>The hospital's centralized medical library.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Service Level Management</strong></td>
+                                <td>Defines, negotiates, and reports clear targets aligned with business outcomes.</td>
+                                <td>The contract between a landlord and tenant regarding repairs.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="alert-box alert-box-success">
+                    <div class="alert-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:18px;height:18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Crucial Exam Distinction: Deployment vs. Release
+                    </div>
+                    <p>In ITIL 4, **Deployment** and **Release** are completely distinct.
+                    <br>• **Deployment Management** is technical (e.g., copying compiled code to production servers at 2:00 AM on Sunday). The code is there, but users cannot see it because it's behind a feature toggle.
+                    <br>• **Release Management** is business-centric (e.g., turning on the feature flag at 9:00 AM on Tuesday and launching marketing campaigns).
+                    <br><br>Software can be deployed to production weeks before it is officially released to customers.</p>
+                </div>
+            </article>
+
+            <!-- MODULE 5 -->
+            <article class="module-card" data-module="5">
+                <div class="module-header">
+                    <h2 class="module-title">5. Prioritization and Work Management</h2>
+                    <label class="module-check-container">
+                        <input type="checkbox" class="module-complete-check" data-id="mod5">
+                        <span>Completed</span>
+                    </label>
+                </div>
+
+                <p>IT departments are constantly flooded with work (incidents, feature requests, system upgrades). CDS teaches strategies to manage backlogs and accelerate flow.</p>
+
+                <h3>5.1 Work in Progress (WIP) Limits</h3>
+                <p>Unmanaged work leads to massive queues. When developers or support agents multitask across dozens of open items, "context switching" wastes time and stalls flow. CDS advocates **WIP Limits** (derived from Kanban): restricting the number of active tasks a team can work on simultaneously. By forcing the team to *finish* existing tasks before *starting* new ones, delivery speeds increase dramatically.</p>
+
+                <h3>5.2 Swarming Support Models</h3>
+                <p>Traditional IT support uses hierarchical tiers: Tier 1 (Service Desk) fails -> Tier 2 (Desktop Support) fails -> Tier 3 (Vendors/Developers). This sequence creates massive waiting queues.
+                <br>CDS advocates **Swarming**—a collaborative support model where cross-functional experts assemble to solve incidents as a single group. There are three primary swarms:</p>
+                <ul>
+                    <li><strong>Dispatch Swarm:</strong> Meets briefly and frequently to rapidly triage incoming incidents, resolving simple ones instantly and sending complex ones to the best swarms.</li>
+                    <li><strong>Backlog Swarm:</strong> Gathers regularly to tackle stubborn, long-standing, unresolved incidents by bringing together diverse experts (e.g., DBA, network admin, developer) to brainstorm.</li>
+                    <li><strong>Drop-in Swarm:</strong> Formed immediately when a major, high-priority outage strikes (e.g., checkout system crashes).</li>
+                </ul>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                        Real-World Analogy: Swarming in Action
+                    </div>
+                    <p>• <strong>Dispatch Swarm:</strong> Like ER doctors standing at the ambulance bay. They quickly look at incoming patients, patch minor cuts immediately, and send critical cases directly to surgery.
+                    <br>• <strong>Backlog Swarm:</strong> A weekly hospital board meeting where various specialists (cardiology, neurology, oncology) review a patient with highly complex, undiagnosed symptoms together.
+                    <br>• <strong>Drop-in Swarm:</strong> A "Code Blue" emergency. The alarm rings, and the anesthesiologist, cardiologist, and trauma nurses immediately run to the patient's room to resuscitate them together.
+                    </p>
+                </div>
+
+                <h3>5.3 Prioritization Models</h3>
+                <ul>
+                    <li><strong>MoSCoW:</strong> Categorizes demands into **M**ust have, **S**hould have, **C**ould have, and **W**on't have. Useful for rapid scope management.</li>
+                    <li><strong>Weighted Shortest Job First (WSJF):</strong> A mathematical scheduling model. It calculates the **Cost of Delay** (business urgency + risk reduction + value lost by waiting) and divides it by the **Job Size/Duration**. Jobs that yield massive value and require little execution time are scheduled first (quick wins).</li>
+                </ul>
+
+                <h3>5.4 The "Shift-Left" Strategy</h3>
+                <p>**Shift-Left** means moving tasks, testing, or issue resolution closer to the source of demand or earlier in the service lifecycle.</p>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                        Real-World Analogy: Hotel Room Safes
+                    </div>
+                    <p>Traditionally, if a hotel guest forgets their in-room safe combination, they must call the front desk, who dispatches the hotel security manager (Tier-2 support) with a physical master key. This takes 30 minutes, leading to guest frustration.
+                    <br><br>The hotel decides to **Shift-Left**: they place a clear, simple 3-step diagram on the safe door and program a "reset passcode via SMS" option. Now, the guest resolves their own issue in 30 seconds. The resolution has shifted "left" directly to the customer, freeing up the security manager for real safety tasks.</p>
+                </div>
+            </article>
+
+            <!-- MODULE 6 -->
+            <article class="module-card" data-module="6">
+                <div class="module-header">
+                    <h2 class="module-title">6. Sourcing & SIAM</h2>
+                    <label class="module-check-container">
+                        <input type="checkbox" class="module-complete-check" data-id="mod6">
+                        <span>Completed</span>
+                    </label>
+                </div>
+
+                <p>In modern enterprise IT, companies rarely build or operate every component in-house. Strategic vendor management is essential.</p>
+
+                <h3>6.1 Sourcing Models</h3>
+                <ul>
+                    <li><strong>Insourcing:</strong> Keep all capabilities inside, relying on direct internal staff.</li>
+                    <li><strong>Outsourcing:</strong> Contract out complete operational responsibility of a service to an external vendor.</li>
+                    <li><strong>Co-Sourcing:</strong> Collaborative model where internal teams work hand-in-hand with external supplier resources to deliver a service.</li>
+                </ul>
+
+                <h3>6.2 Service Integration and Management (SIAM)</h3>
+                <p>When an enterprise uses multiple diverse external IT suppliers (e.g., AWS for cloud, Salesforce for CRM, a local MSP for desks, a telecom firm for WAN), managing them individually leads to massive integration gaps, commercial finger-pointing, and disjointed service delivery during outages.</p>
+                <p>**SIAM** introduces a dedicated **Service Integrator** layer. The Service Integrator sits between the client business and the multiple suppliers. The Integrator does not necessarily deliver technical work; instead, it coordinates all suppliers under a single set of operating standards, unified end-to-end SLAs, and shared incident handling workflows.</p>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                        Real-World Analogy: The Wedding Planner
+                    </div>
+                    <p>A couple planning a large wedding (the client business) has to hire a DJ, a caterer, a florist, a photographer, and a venue manager (the multiple suppliers). If the couple coordinates them individually on their wedding day, it's a disaster—the DJ plays music too early, the caterer serves food late, and they blame each other.
+                    <br><br>The couple hires a **Wedding Planner (Service Integrator)**. The planner coordinates all suppliers, ensuring the DJ plays the announcement music at the exact second the caterer brings out the cake. The planner integrates the separate services into a seamless experience.</p>
+                </div>
+            </article>
+
+        </section>
+
+
+        <!-- ================= PRACTICE EXAM TAB ================= -->
+        <section id="exam-tab" class="tab-content">
+            
+            <div class="quiz-container">
+                <div class="quiz-score-header">
+                    <span>ITIL 4 CDS Mock Exam</span>
+                    <span id="quiz-score-display">Score: 0/0</span>
+                </div>
+
+                <!-- Questions (10 total scenario questions) -->
+                <div class="question-flow" id="question-flow">
+                    
+                    <!-- Q1 -->
+                    <div class="question-card active" data-qindex="1">
+                        <div class="question-number">Question 1 of 10 (Bloom's Level 3)</div>
+                        <p class="question-text">An IT organization has recently consolidated its database administrators (DBAs) and systems engineers into technical pools. Although their knowledge depth has increased, project teams report that requesting database changes now takes twice as long due to communication delays. What organizational structure has this organization adopted, and what is its main drawback?</p>
+                        <ul class="options-list">
+                            <li class="option-item" data-val="A"><span class="option-prefix">A</span> <span class="option-text">Matrix structure; creates conflicting lines of authority.</span></li>
+                            <li class="option-item" data-val="B"><span class="option-prefix">B</span> <span class="option-text">Functional structure; creates organizational silos that delay workflow.</span></li>
+                            <li class="option-item" data-val="C"><span class="option-prefix">C</span> <span class="option-text">Divisional structure; leads to duplication of specialized roles.</span></li>
+                            <li class="option-item" data-val="D"><span class="option-prefix">D</span> <span class="option-text">Flat structure; restricts vertical scaling and career paths.</span></li>
+                        </ul>
+                        <div class="feedback-box"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="question-card" data-qindex="2">
+                        <div class="question-number">Question 2 of 10 (Bloom's Level 2)</div>
+                        <p class="question-text">A customer satisfaction survey reveals that users are highly dissatisfied with a core finance system, which frequently hangs. However, the IT dashboard reports that the hosting SLA (uptime) is at 99.98% (Green). What does this scenario represent?</p>
+                        <ul class="options-list">
+                            <li class="option-item" data-val="A"><span class="option-prefix">A</span> <span class="option-text">Outcome-based measuring.</span></li>
+                            <li class="option-item" data-val="B"><span class="option-prefix">B</span> <span class="option-text">Watermelon metric.</span></li>
+                            <li class="option-item" data-val="C"><span class="option-prefix">C</span> <span class="option-text">Psychological unsafety.</span></li>
+                            <li class="option-item" data-val="D"><span class="option-prefix">D</span> <span class="option-text">T-shaped skill gap.</span></li>
+                        </ul>
+                        <div class="feedback-box"></div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="question-card" data-qindex="3">
+                        <div class="question-number">Question 3 of 10 (Bloom's Level 3)</div>
+                        <p class="question-text">Your organization is planning a value stream for a new banking application. A debate arises regarding when developers should push the code artifacts to the production servers and when the business should expose the feature to customers. According to ITIL 4 CDS, which of the following is correct?</p>
+                        <ul class="options-list">
+                            <li class="option-item" data-val="A"><span class="option-prefix">A</span> <span class="option-text">Deployment Management is the business action of making features available, while Release Management is the technical move.</span></li>
+                            <li class="option-item" data-val="B"><span class="option-prefix">B</span> <span class="option-text">Release Management and Deployment Management must always occur at the exact same time.</span></li>
+                            <li class="option-item" data-val="C"><span class="option-prefix">C</span> <span class="option-text">Deployment Management technically moves components to live environments; Release Management makes services available to users.</span></li>
+                            <li class="option-item" data-val="D"><span class="option-prefix">D</span> <span class="option-text">Change Enablement is the only practice responsible for both technical movement and commercial availability.</span></li>
+                        </ul>
+                        <div class="feedback-box"></div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="question-card" data-qindex="4">
+                        <div class="question-number">Question 4 of 10 (Bloom's Level 3)</div>
+                        <p class="question-text">A support manager wants to reduce the resolution time for Tier-2 hardware issues. She instructs Tier-3 experts to create video guides and automated diagnostic checklists for Tier-1 Service Desk agents, allowing them to solve minor failures directly. What optimization approach does this represent?</p>
+                        <ul class="options-list">
+                            <li class="option-item" data-val="A"><span class="option-prefix">A</span> <span class="option-text">Outsourcing strategy.</span></li>
+                            <li class="option-item" data-val="B"><span class="option-prefix">B</span> <span class="option-text">Shift-Left approach.</span></li>
+                            <li class="option-item" data-val="C"><span class="option-prefix">C</span> <span class="option-text">Watermelon metric mitigation.</span></li>
+                            <li class="option-item" data-val="D"><span class="option-prefix">D</span> <span class="option-text">Matrix organizational alignment.</span></li>
+                        </ul>
+                        <div class="feedback-box"></div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="question-card" data-qindex="5">
+                        <div class="question-number">Question 5 of 10 (Bloom's Level 2)</div>
+                        <p class="question-text">Which of the following best describes a 'T-shaped' professional profile?</p>
+                        <ul class="options-list">
+                            <li class="option-item" data-val="A"><span class="option-prefix">A</span> <span class="option-text">An employee who has deep technical skills in one area and broad knowledge across other areas to aid collaboration.</span></li>
+                            <li class="option-item" data-val="B"><span class="option-prefix">B</span> <span class="option-text">A temporary manager hired to handle crisis management or SIAM models.</span></li>
+                            <li class="option-item" data-val="C"><span class="option-prefix">C</span> <span class="option-text">A technical expert who only works in functional structures and rejects cross-functional swarms.</span></li>
+                            <li class="option-item" data-val="D"><span class="option-prefix">D</span> <span class="option-text">A software system capable of automated CI/CD and AI monitoring.</span></li>
+                        </ul>
+                        <div class="feedback-box"></div>
+                    </div>
+
+                    <!-- Q6 -->
+                    <div class="question-card" data-qindex="6">
+                        <div class="question-number">Question 6 of 10 (Bloom's Level 3)</div>
+                        <p class="question-text">A company relies on three distinct external SaaS suppliers and an external cloud infrastructure vendor. The client enterprise is struggling with finger-pointing between vendors during major outages. Which methodology should they adopt to integrate and manage these disparate suppliers?</p>
+                        <ul class="options-list">
+                            <li class="option-item" data-val="A"><span class="option-prefix">A</span> <span class="option-text">Robotic Process Automation (RPA).</span></li>
+                            <li class="option-item" data-val="B"><span class="option-prefix">B</span> <span class="option-text">Weighted Shortest Job First (WSJF).</span></li>
+                            <li class="option-item" data-val="C"><span class="option-prefix">C</span> <span class="option-text">Service Integration and Management (SIAM).</span></li>
+                            <li class="option-item" data-val="D"><span class="option-prefix">D</span> <span class="option-text">Continuous Delivery pipeline (CD).</span></li>
+                        </ul>
+                        <div class="feedback-box"></div>
+                    </div>
+
+                    <!-- Q7 -->
+                    <div class="question-card" data-qindex="7">
+                        <div class="question-number">Question 7 of 10 (Bloom's Level 2)</div>
+                        <p class="question-text">Which support model encourages collaborative, cross-functional expert reviews of complex incident tickets instead of passing tickets through hierarchical Tiers (1 to 2 to 3)?</p>
+                        <ul class="options-list">
+                            <li class="option-item" data-val="A"><span class="option-prefix">A</span> <span class="option-text">Watermelon modeling.</span></li>
+                            <li class="option-item" data-val="B"><span class="option-prefix">B</span> <span class="option-text">Functional compartmentalization.</span></li>
+                            <li class="option-item" data-val="C"><span class="option-prefix">C</span> <span class="option-text">Swarming.</span></li>
+                            <li class="option-item" data-val="D"><span class="option-prefix">D</span> <span class="option-text">Insourcing.</span></li>
+                        </ul>
+                        <div class="feedback-box"></div>
+                    </div>
+
+                    <!-- Q8 -->
+                    <div class="question-card" data-qindex="8">
+                        <div class="question-number">Question 8 of 10 (Bloom's Level 3)</div>
+                        <p class="question-text">An operations team is overwhelmed by repetitive tasks such as provisioning virtual directories and checking server disk logs daily. Which technology would ITIL 4 CDS recommend to automate these rule-based tasks?</p>
+                        <ul class="options-list">
+                            <li class="option-item" data-val="A"><span class="option-prefix">A</span> <span class="option-text">Robotic Process Automation (RPA).</span></li>
+                            <li class="option-item" data-val="B"><span class="option-prefix">B</span> <span class="option-text">T-shaped profile management.</span></li>
+                            <li class="option-item" data-val="C"><span class="option-prefix">C</span> <span class="option-text">Watermelon metric dashboarding.</span></li>
+                            <li class="option-item" data-val="D"><span class="option-prefix">D</span> <span class="option-text">Flat organizational structuring.</span></li>
+                        </ul>
+                        <div class="feedback-box"></div>
+                    </div>
+
+                    <!-- Q9 -->
+                    <div class="question-card" data-qindex="9">
+                        <div class="question-number">Question 9 of 10 (Bloom's Level 2)</div>
+                        <p class="question-text">An organization wants to prioritize tasks in its service backlog. It decides to calculate the cost to the business for delaying a task and divide it by the length of time it takes to deliver that task. Which prioritization model is this?</p>
+                        <ul class="options-list">
+                            <li class="option-item" data-val="A"><span class="option-prefix">A</span> <span class="option-text">MoSCoW prioritization.</span></li>
+                            <li class="option-item" data-val="B"><span class="option-prefix">B</span> <span class="option-text">Weighted Shortest Job First (WSJF).</span></li>
+                            <li class="option-item" data-val="C"><span class="option-prefix">C</span> <span class="option-text">Watermelon scoring.</span></li>
+                            <li class="option-item" data-val="D"><span class="option-prefix">D</span> <span class="option-text">Servant leadership matrix.</span></li>
+                        </ul>
+                        <div class="feedback-box"></div>
+                    </div>
+
+                    <!-- Q10 -->
+                    <div class="question-card" data-qindex="10">
+                        <div class="question-number">Question 10 of 10 (Bloom's Level 2)</div>
+                        <p class="question-text">Why does ITIL 4 CDS emphasize the establishment of 'Psychological Safety' within service teams?</p>
+                        <ul class="options-list">
+                            <li class="option-item" data-val="A"><span class="option-prefix">A</span> <span class="option-text">To prevent suppliers from violating SLA metrics.</span></li>
+                            <li class="option-item" data-val="B"><span class="option-prefix">B</span> <span class="option-text">To enable staff to safely take risks, share feedback, and admit errors, facilitating rapid continual improvement.</span></li>
+                            <li class="option-item" data-val="C"><span class="option-prefix">C</span> <span class="option-text">To establish a command-and-control organizational culture.</span></li>
+                            <li class="option-item" data-val="D"><span class="option-prefix">D</span> <span class="option-text">To automatically route complex incidents to Tier-3 support pools.</span></li>
+                        </ul>
+                        <div class="feedback-box"></div>
+                    </div>
+
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn btn-outline" id="prev-q-btn" disabled>Previous</button>
+                    <button class="btn" id="next-q-btn">Submit Answer</button>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ================= GLOSSARY TAB ================= -->
+        <section id="glossary-tab" class="tab-content">
+            
+            <div class="glossary-container" id="glossary-list">
+                
+                <div class="accordion-item" data-term="swarming">
+                    <div class="accordion-header">
+                        <span>Swarming</span>
+                        <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        A collaborative support model where diverse, cross-functional experts assemble to resolve an issue or incident ticket collectively, bypassing traditional tiered support delays.
+                    </div>
+                </div>
+
+                <div class="accordion-item" data-term="shift-left">
+                    <div class="accordion-header">
+                        <span>Shift-Left</span>
+                        <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        The strategy of moving work, testing, or resolutions earlier in the lifecycle or closer to the customer (e.g. self-service, automating Tier-2 support steps at the Tier-1 desk).
+                    </div>
+                </div>
+
+                <div class="accordion-item" data-term="watermelon metrics">
+                    <div class="accordion-header">
+                        <span>Watermelon Metrics</span>
+                        <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        SLA reporting that appears "green on the outside" (technical dashboard metrics met) but is "red on the inside" (customers remain highly dissatisfied due to operational failure).
+                    </div>
+                </div>
+
+                <div class="accordion-item" data-term="t-shaped profile">
+                    <div class="accordion-header">
+                        <span>T-Shaped Profiles</span>
+                        <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        An individual with deep technical specialization in one core field (vertical line of the T) combined with broad working knowledge and business understanding of related disciplines (horizontal line of the T).
+                    </div>
+                </div>
+
+                <div class="accordion-item" data-term="siam service integration and management">
+                    <div class="accordion-header">
+                        <span>Service Integration and Management (SIAM)</span>
+                        <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        A methodology to coordinate, integrate, and govern multiple separate service vendors and cloud suppliers using a single, unified "Service Integrator" layer to achieve consistent business outcomes.
+                    </div>
+                </div>
+
+                <div class="accordion-item" data-term="aiops artificial intelligence operations">
+                    <div class="accordion-header">
+                        <span>AIOps</span>
+                        <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        Applying artificial intelligence and machine learning to IT operations. Used to ingest massive telemetry logs, correlate cross-platform events, reduce noise, and flag anomalies before outages strike.
+                    </div>
+                </div>
+
+                <div class="accordion-item" data-term="rpa robotic process automation">
+                    <div class="accordion-header">
+                        <span>Robotic Process Automation (RPA)</span>
+                        <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        Software agents programmed to replicate high-volume, rule-based repetitive human screen tasks (like form filing, account provisioning, or basic system checkouts) to boost operational speed.
+                    </div>
+                </div>
+
+                <div class="accordion-item" data-term="wsjf weighted shortest job first">
+                    <div class="accordion-header">
+                        <span>Weighted Shortest Job First (WSJF)</span>
+                        <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        A scheduling prioritization model calculated by dividing the *Cost of Delay* (business urgency + risk reduction + value) by *Job Size/Duration*. Prioritizes high-value quick wins.
+                    </div>
+                </div>
+
+                <div class="accordion-item" data-term="psychological safety">
+                    <div class="accordion-header">
+                        <span>Psychological Safety</span>
+                        <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        A team culture where individuals believe they will not be punished, embarrassed, or blamed for raising concerns, pointing out failures, or asking questions.
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= TRACKER TAB ================= -->
+        <section id="tracker-tab" class="tab-content">
+            
+            <div class="module-card">
+                <div class="module-header">
+                    <h2 class="module-title">Your Study Checklist</h2>
+                </div>
+                <p>Track your learning completion state across all six core ITIL 4 Specialist: Create, Deliver and Support syllabus units. Progress is saved automatically.</p>
+                
+                <div style="margin: 20px 0; display:flex; flex-direction:column; gap:12px;">
+                    <label class="option-item" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
+                        <input type="checkbox" class="checklist-item" data-target="mod1" style="width:20px;height:20px; accent-color:var(--success-color);">
+                        <div>
+                            <strong>Unit 1: Organization and Culture</strong>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Structures, Collaborative Teams, Servant Leadership, Watermelon Metrics</div>
+                        </div>
+                    </label>
+
+                    <label class="option-item" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
+                        <input type="checkbox" class="checklist-item" data-target="mod2" style="width:20px;height:20px; accent-color:var(--success-color);">
+                        <div>
+                            <strong>Unit 2: Information and Technology</strong>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Integrated Toolchains, RPA, AI, AIOps, CI/CD Pipelines</div>
+                        </div>
+                    </label>
+
+                    <label class="option-item" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
+                        <input type="checkbox" class="checklist-item" data-target="mod3" style="width:20px;height:20px; accent-color:var(--success-color);">
+                        <div>
+                            <strong>Unit 3: Service Value Streams</strong>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Value stream mechanics; Walkthrough of New Service & User Incident streams</div>
+                        </div>
+                    </label>
+
+                    <label class="option-item" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
+                        <input type="checkbox" class="checklist-item" data-target="mod4" style="width:20px;height:20px; accent-color:var(--success-color);">
+                        <div>
+                            <strong>Unit 4: Core ITIL Practices in CDS</strong>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">How 12 practices support the SVC (Validation, Deployment vs Release, Service Desk)</div>
+                        </div>
+                    </label>
+
+                    <label class="option-item" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
+                        <input type="checkbox" class="checklist-item" data-target="mod5" style="width:20px;height:20px; accent-color:var(--success-color);">
+                        <div>
+                            <strong>Unit 5: Prioritization & Work Management</strong>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Backlogs, WIP Limits, Swarming support structures, Shift-Left, WSJF scheduling</div>
+                        </div>
+                    </label>
+
+                    <label class="option-item" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
+                        <input type="checkbox" class="checklist-item" data-target="mod6" style="width:20px;height:20px; accent-color:var(--success-color);">
+                        <div>
+                            <strong>Unit 6: Sourcing & SIAM</strong>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Build vs Buy, Sourcing strategies, SIAM service coordinator layer</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Mobile Navigation Bar -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-tab="guide-tab">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+            <span>Guide</span>
+        </button>
+        <button class="nav-item" data-tab="exam-tab">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>Exam</span>
+        </button>
+        <button class="nav-item" data-tab="glossary-tab">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7" /></svg>
+            <span>Glossary</span>
+        </button>
+        <button class="nav-item" data-tab="tracker-tab">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+            <span>Tracker</span>
+        </button>
+    </nav>
+
+    <!-- Quiz and App JS Logic -->
+    <script>
+        // Tab switching logic
+        const navItems = document.querySelectorAll('.nav-item');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const searchSection = document.getElementById('search-section');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetTab = item.getAttribute('data-tab');
+                
+                navItems.forEach(nav => nav.classList.remove('active'));
+                tabContents.forEach(tab => tab.classList.remove('active'));
+                
+                item.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+
+                // Only show search container on Guide and Glossary tabs
+                if (targetTab === 'guide-tab' || targetTab === 'glossary-tab') {
+                    searchSection.style.display = 'block';
+                } else {
+                    searchSection.style.display = 'none';
+                }
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // HSL Dark / Light Theme Toggle
+        const themeBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('itil-theme', isDark ? 'dark' : 'light');
+            updateThemeUI(isDark);
+        });
+
+        function updateThemeUI(isDark) {
+            if (isDark) {
+                themeText.textContent = 'Light';
+                themeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.364 17.636l-.707.707M18.364 18.364l-.707-.707M6.364 5.636l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />`;
+            } else {
+                themeText.textContent = 'Dark';
+                themeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />`;
+            }
+        }
+
+        // Initialize theme from storage
+        const savedTheme = localStorage.getItem('itil-theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            updateThemeUI(true);
+        }
+
+        // Progress Tracking & Checkboxes Logic
+        const progressCheckboxes = document.querySelectorAll('.module-complete-check');
+        const checklistCheckboxes = document.querySelectorAll('.checklist-item');
+        const overallProgressBar = document.getElementById('overall-progress');
+
+        const totalItems = progressCheckboxes.length;
+
+        function updateAllProgress() {
+            let completedCount = 0;
+            progressCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) completedCount++;
+            });
+
+            const percent = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
+            overallProgressBar.style.width = percent + '%';
+            
+            // Save state
+            const state = {};
+            progressCheckboxes.forEach(c => {
+                state[c.getAttribute('data-id')] = c.checked;
+            });
+            localStorage.setItem('itil-progress-state', JSON.stringify(state));
+        }
+
+        // Double bind checkboxes (Guide card header checkbox <-> Checklist tab checkbox)
+        progressCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const targetId = checkbox.getAttribute('data-id');
+                const matchingCheck = document.querySelector(`.checklist-item[data-target="${targetId}"]`);
+                if (matchingCheck) matchingCheck.checked = checkbox.checked;
+                updateAllProgress();
+            });
+        });
+
+        checklistCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const targetId = checkbox.getAttribute('data-target');
+                const matchingCheck = document.querySelector(`.module-complete-check[data-id="${targetId}"]`);
+                if (matchingCheck) matchingCheck.checked = checkbox.checked;
+                updateAllProgress();
+            });
+        });
+
+        // Load progress from storage
+        const savedProgress = JSON.parse(localStorage.getItem('itil-progress-state') || '{}');
+        Object.keys(savedProgress).forEach(id => {
+            const hasChecked = savedProgress[id];
+            
+            const mainCheck = document.querySelector(`.module-complete-check[data-id="${id}"]`);
+            if (mainCheck) mainCheck.checked = hasChecked;
+
+            const listCheck = document.querySelector(`.checklist-item[data-target="${id}"]`);
+            if (listCheck) listCheck.checked = hasChecked;
+        });
+        updateAllProgress();
+
+        // Glossary Accordion logic
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                const isOpen = item.classList.contains('open');
+                
+                // Close all other accordion items
+                document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+                
+                if (!isOpen) {
+                    item.classList.add('open');
+                }
+            });
+        });
+
+        // Search/Filter Function
+        const searchInput = document.getElementById('search-input');
+        
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase().trim();
+            const activeTab = document.querySelector('.tab-content.active').id;
+
+            if (activeTab === 'guide-tab') {
+                const cards = document.querySelectorAll('.module-card');
+                cards.forEach(card => {
+                    const textContent = card.innerText.toLowerCase();
+                    if (textContent.includes(val)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            } else if (activeTab === 'glossary-tab') {
+                const items = document.querySelectorAll('.accordion-item');
+                items.forEach(item => {
+                    const term = item.getAttribute('data-term');
+                    const text = item.innerText.toLowerCase();
+                    if (term.includes(val) || text.includes(val)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // Scenario Mock Exam Logic
+        const quizAnswers = {
+            1: { correct: 'B', rationales: {
+                A: 'Incorrect. While Matrix structures have dual authority challenges, this describes a purely technical DBA pool which is typical of a functional structure.',
+                B: 'Correct! By consolidating DBAs and systems engineers into specialized pools, the organization created a Functional structure. Although functional structures enhance technical depth, their major drawback is the creation of specialized silos that slow down communication and flow.',
+                C: 'Incorrect. A Divisional structure groups teams by lines of business or products, not specialized pools like DBAs.',
+                D: 'Incorrect. Flat structures minimize levels of hierarchy; they do not pool roles into rigid functional departments.'
+            }},
+            2: { correct: 'B', rationales: {
+                A: 'Incorrect. Outcome-based measurements look at actual business value enabled, rather than internal component SLA metrics.',
+                B: 'Correct! This is a classic "Watermelon Metric". Uptime dashboards report a green light (99.98%), but user satisfaction is red because the application is practically unusable.',
+                C: 'Incorrect. Psychological safety refers to trust within teams, which is unrelated to this SLA reporting disparity.',
+                D: 'Incorrect. A T-shaped skill gap is a staffing capability issue, not an SLA mismatch.'
+            }},
+            3: { correct: 'C', rationales: {
+                A: 'Incorrect. The definitions are reversed; Deployment is the technical action, and Release is the business/commercial action.',
+                B: 'Incorrect. In ITIL 4, Deployment and Release are separate practices. Software can be deployed weeks before it is officially released.',
+                C: 'Correct! Deployment Management handles the technical action of moving code/hardware to target environments. Release Management handles making those deployed elements available for customer consumption.',
+                D: 'Incorrect. Change Enablement evaluates and schedules change risks; it is not the sole execution vehicle for both technical deployment and commercial release.'
+            }},
+            4: { correct: 'B', rationales: {
+                A: 'Incorrect. Sourcing/Outsourcing involves contracting work to external providers; this shift is entirely internal.',
+                B: 'Correct! Providing Tier-1 desk agents with detailed manuals and video checklists shifts the problem-solving tasks "left" closer to the customer contact point, bypassing Tier-2 delay.',
+                C: 'Incorrect. Watermelon metrics refer to green SLA/red satisfaction mismatches, not task shifting.',
+                D: 'Incorrect. Matrix structure refers to reporting lines, not knowledge shifting.'
+            }},
+            5: { correct: 'A', rationales: {
+                A: 'Correct! A T-shaped profile indicates deep specialized skill in one core functional area (vertical line) combined with broad, collaborative understanding of related practices and business strategies (horizontal line).',
+                B: 'Incorrect. This describes a contractor or manager, not a T-shaped profile.',
+                C: 'Incorrect. T-shaped employees actively support cross-functional swarms and collaboration.',
+                D: 'Incorrect. A T-shaped profile refers strictly to human workforce competencies, not software toolchains.'
+            }},
+            6: { correct: 'C', rationales: {
+                A: 'Incorrect. RPA automates simple rule-based human clicks; it does not coordinate multi-supplier ecosystems.',
+                B: 'Incorrect. WSJF is a backlog prioritization model, not a vendor coordinator layer.',
+                C: 'Correct! Service Integration and Management (SIAM) is the specific framework that introduces a "Service Integrator" to orchestrate multiple, diverse cloud and outsourcing partners as a unified interface.',
+                D: 'Incorrect. CI/CD is a software deployment toolchain, not a vendor integration model.'
+            }},
+            7: { correct: 'C', rationales: {
+                A: 'Incorrect. Watermelon modeling is not an ITIL term.',
+                B: 'Incorrect. Compartmentalization isolates teams; the prompt describes a highly collaborative model.',
+                C: 'Correct! Swarming is a collaborative model where a cross-functional squad of experts gathers dynamically to address complex issues as a group, bypassing sequential tier-based handoffs.',
+                D: 'Incorrect. Insourcing refers to in-house hiring, not a ticket resolution model.'
+            }},
+            8: { correct: 'A', rationales: {
+                A: 'Correct! Robotic Process Automation (RPA) uses software bots to automate highly repetitive, high-volume rule-based administrative tasks such as directory creation and log checking.',
+                B: 'Incorrect. T-shaped profiles are human skill shapes, not automation tools.',
+                C: 'Incorrect. Watermelon metrics refer to SLA reporting disparities.',
+                D: 'Incorrect. Flat structures refer to reporting hierarchy.'
+            }},
+            9: { correct: 'B', rationales: {
+                A: 'Incorrect. MoSCoW categorizes requirements into Must/Should/Could/Won\'t buckets; it doesn\'t compute Cost of Delay.',
+                B: 'Correct! Weighted Shortest Job First (WSJF) divides the Cost of Delay (urgency + risk + value) by the overall Job Duration or size to determine sequence prioritization.',
+                C: 'Incorrect. Watermelon metrics do not involve mathematical scheduling formulas.',
+                D: 'Incorrect. Servant leadership is a management philosophy, not a backlog prioritization formula.'
+            }},
+            10: { correct: 'B', rationales: {
+                A: 'Incorrect. Psychological safety deals with team trust and communication, not external supplier SLAs.',
+                B: 'Correct! When a team has high psychological safety, staff feel safe to admit errors, voice feedback, and try new approaches without fear of blame. This is the foundation of a continual improvement and learning culture.',
+                C: 'Incorrect. Psychological safety actively breaks down command-and-control practices.',
+                D: 'Incorrect. Swarming and ticket routing are process models, not cultural indicators.'
+            }}
+        };
+
+        let currentQuestion = 1;
+        let selectedOption = null;
+        let score = 0;
+        let gradedQuestions = {};
+
+        const qCards = document.querySelectorAll('.question-card');
+        const prevBtn = document.getElementById('prev-q-btn');
+        const nextBtn = document.getElementById('next-q-btn');
+        const scoreDisplay = document.getElementById('quiz-score-display');
+
+        function selectOptionHandler(optionCard, questionIndex) {
+            if (gradedQuestions[questionIndex]) return; // locked after submission
+
+            const cardOptions = optionCard.parentElement.querySelectorAll('.option-item');
+            cardOptions.forEach(opt => opt.classList.remove('selected'));
+            
+            optionCard.classList.add('selected');
+            selectedOption = optionCard.getAttribute('data-val');
+            nextBtn.disabled = false;
+        }
+
+        // Add click events to options
+        document.querySelectorAll('.option-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const qCard = item.closest('.question-card');
+                const qIndex = parseInt(qCard.getAttribute('data-qindex'));
+                selectOptionHandler(item, qIndex);
+            });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestion > 1) {
+                qCards[currentQuestion - 1].classList.remove('active');
+                currentQuestion--;
+                qCards[currentQuestion - 1].classList.add('active');
+                
+                selectedOption = null;
+                nextBtn.disabled = true;
+                nextBtn.textContent = gradedQuestions[currentQuestion] ? 'Next Question' : 'Submit Answer';
+                
+                if (currentQuestion === 1) prevBtn.disabled = true;
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            const qCard = qCards[currentQuestion - 1];
+            const qIndex = parseInt(qCard.getAttribute('data-qindex'));
+            const feedbackBox = qCard.querySelector('.feedback-box');
+
+            if (!gradedQuestions[qIndex]) {
+                // Submit Answer Action
+                if (!selectedOption) return;
+
+                const correctAns = quizAnswers[qIndex].correct;
+                const rationales = quizAnswers[qIndex].rationales;
+                const isCorrect = selectedOption === correctAns;
+
+                gradedQuestions[qIndex] = {
+                    selected: selectedOption,
+                    isCorrect: isCorrect
+                };
+
+                if (isCorrect) score++;
+                scoreDisplay.textContent = `Score: ${score}/10`;
+
+                // Add visual classes to options
+                const cardOptions = qCard.querySelectorAll('.option-item');
+                cardOptions.forEach(opt => {
+                    const optVal = opt.getAttribute('data-val');
+                    if (optVal === correctAns) {
+                        opt.classList.add('correct');
+                    } else if (optVal === selectedOption) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+
+                // Set feedback text
+                feedbackBox.innerHTML = `
+                    <div style="font-weight:700; color:${isCorrect ? '#10b981' : '#ef4444'}; margin-bottom:6px;">
+                        ${isCorrect ? '✓ Correct Answer!' : '✗ Incorrect'}
+                    </div>
+                    <p style="margin-bottom:0;"><strong>Rationale:</strong> ${rationales[selectedOption]}</p>
+                    <p style="margin-top:6px; margin-bottom:0; font-size:0.8rem; color:var(--text-muted);">
+                        <em>Reference Section: Module ${qIndex === 1 ? '1' : qIndex === 2 ? '1' : qIndex === 3 ? '4' : qIndex === 4 ? '5' : qIndex === 5 ? '1' : qIndex === 6 ? '6' : qIndex === 7 ? '5' : qIndex === 8 ? '2' : qIndex === 9 ? '5' : '1'}</em>
+                    </p>
+                `;
+                feedbackBox.classList.add('visible');
+                
+                nextBtn.textContent = 'Next Question';
+            } else {
+                // Next Question Action
+                if (currentQuestion < 10) {
+                    qCards[currentQuestion - 1].classList.remove('active');
+                    currentQuestion++;
+                    qCards[currentQuestion - 1].classList.add('active');
+                    
+                    selectedOption = null;
+                    prevBtn.disabled = false;
+                    nextBtn.disabled = gradedQuestions[currentQuestion] ? false : true;
+                    nextBtn.textContent = gradedQuestions[currentQuestion] ? 'Next Question' : 'Submit Answer';
+                } else {
+                    // Show final report card
+                    alert(`Congratulations! You completed the ITIL 4 CDS Mock Exam.\n\nFinal Score: ${score}/10 (${score >= 7 ? 'PASS' : 'FAIL'} - Passing threshold is 70%)\n\nReview your rationales using the "Previous" buttons.`);
+                }
+            }
+        });
+
+        // Initialize quiz button state
+        nextBtn.disabled = true;
+
+    </script>
+</body>
+</html>

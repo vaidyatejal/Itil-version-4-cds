@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ITIL 4 CDS Simplified: Creative Review Arena</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --accent-color: #06b6d4; /* Vibrant teal */
+            --accent-glow: rgba(6, 182, 212, 0.2);
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+            --transition-speed: 0.25s;
+        }
+
+        .dark-mode {
+            --bg-color: #020617; /* Deepest blue-black */
+            --card-bg: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.25);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding-bottom: 80px;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        /* Sticky Header */
+        header {
+            background: var(--primary-gradient);
+            color: #ffffff;
+            padding: 20px;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(120deg, #ffffff 0%, #a5f3fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-title p {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle-btn, .mode-switch-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .mode-switch-btn {
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .theme-toggle-btn:hover, .mode-switch-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.02);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 3D FLASHCARDS */
+        .flashcard-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .deck-status {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: var(--border-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            opacity: 0.85;
+            transition: background var(--transition-speed);
+        }
+
+        .dark-mode .deck-status {
+            background: #1e293b;
+        }
+
+        .flashcard-scene {
+            width: 100%;
+            max-width: 420px;
+            height: 280px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .flashcard.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            border: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            text-align: center;
+            background-color: var(--card-bg);
+            transition: border-color var(--transition-speed);
+        }
+
+        .dark-mode .flashcard-face {
+            border-color: #1e293b;
+        }
+
+        .flashcard-front {
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(6, 182, 212, 0.02) 100%);
+        }
+
+        .flashcard-back {
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(16, 185, 129, 0.02) 100%);
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-badge {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: var(--accent-color);
+            border: 1.5px solid var(--accent-color);
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            letter-spacing: 0.05em;
+        }
+
+        .flashcard-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .flashcard-prompt {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .flashcard-answer {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            line-height: 1.55;
+        }
+
+        .flashcard-buttons {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            max-width: 420px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .btn-game {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: transform 0.2s, opacity 0.2s;
+            color: white;
+        }
+
+        .btn-game:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+
+        .btn-need-review {
+            background-color: var(--error-color);
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-mastered {
+            background-color: var(--success-color);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+        }
+
+        /* CONCEPT MATCHER */
+        .matcher-container {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            margin-top: 15px;
+        }
+
+        .matcher-score-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            padding: 12px 18px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .matcher-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .matcher-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .matcher-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .matcher-card {
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            min-height: 70px;
+        }
+
+        .matcher-card:hover {
+            border-color: var(--accent-color);
+            background: var(--accent-glow);
+        }
+
+        .matcher-card.selected {
+            border-color: var(--accent-color);
+            background: var(--accent-glow);
+            box-shadow: 0 0 0 1px var(--accent-color);
+            transform: scale(1.02);
+        }
+
+        .matcher-card.matched {
+            border-color: var(--success-color);
+            background: rgba(16, 185, 129, 0.08);
+            color: #065f46;
+            cursor: not-allowed;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .dark-mode .matcher-card.matched {
+            color: #34d399;
+        }
+
+        .matcher-card.error {
+            border-color: var(--error-color);
+            background: rgba(239, 68, 68, 0.08);
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+
+        /* ANALOGIES */
+        .carousel-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .analogy-detail-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 16px;
+        }
+
+        .analogy-badge {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #3b82f6 100%);
+            color: white;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .analogy-head {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .analogy-desc {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .analogy-body {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            border-left: 4px solid var(--accent-color);
+            padding-left: 14px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Sticky Bottom Navigation */
+        nav.bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            background-color: rgba(255, 255, 255, 0.85);
+            transition: background-color var(--transition-speed);
+        }
+
+        .dark-mode nav.bottom-nav {
+            background-color: rgba(15, 23, 42, 0.85);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 10px;
+            transition: color var(--transition-speed), background var(--transition-speed);
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            transition: transform 0.2s;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+
+        .nav-item.active svg {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Header -->
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <h1>CDS Study Arena</h1>
+                <p>Simplified Review Platform</p>
+            </div>
+            <div class="header-actions">
+                <a href="./index.html" class="mode-switch-btn" id="traditional-switch-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <span>Guide Mode</span>
+                </a>
+                <button class="theme-toggle-btn" id="theme-toggle">
+                    <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:14px;height:14px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                    <span id="theme-text">Dark</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ================= FLASHCARDS TAB ================= -->
+        <section id="flashcards-tab" class="tab-content active">
+            <div class="flashcard-wrapper">
+                <div class="deck-status" id="flashcard-progress">Card 1 of 10 | Mastered: 0/10</div>
+                
+                <div class="flashcard-scene" id="flashcard-box">
+                    <div class="flashcard" id="flashcard-card">
+                        <!-- Front Face -->
+                        <div class="flashcard-face flashcard-front">
+                            <div class="flashcard-badge" id="card-badge-front">Category</div>
+                            <div class="flashcard-title" id="card-title-front">Question Card Front</div>
+                            <div class="flashcard-prompt">⚡ Tap card to flip and explain ⚡</div>
+                        </div>
+                        <!-- Back Face -->
+                        <div class="flashcard-face flashcard-back">
+                            <div class="flashcard-badge" id="card-badge-back">Simple Explanation</div>
+                            <div class="flashcard-answer" id="card-answer-back">Simplified text with easy words...</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:20px; font-style:italic;">⚡ Tap again to flip back ⚡</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flashcard-buttons">
+                    <button class="btn-game btn-need-review" id="review-btn">
+                        <span>✗ Review Later</span>
+                    </button>
+                    <button class="btn-game btn-mastered" id="mastered-btn">
+                        <span>✓ Got It!</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= ANALOGY TAB ================= -->
+        <section id="analogies-tab" class="tab-content">
+            <div class="carousel-container">
+                
+                <div class="analogy-detail-card">
+                    <span class="analogy-badge">Organizational Structure</span>
+                    <div class="analogy-head">Functional vs. Divisional Structures</div>
+                    <div class="analogy-desc">How to group your teams.</div>
+                    <div class="analogy-body">
+                        "Think of building houses. Under a <strong>Functional model</strong>, you hire separate plumbers, painters, and builders who do excellent work but don't talk. So the plumber punches holes in the painter's drywall. Under a <strong>Divisional model</strong>, you give every single house its own builder, painter, and plumber; it is fast, but you pay double because you duplicate tools for every house."
+                    </div>
+                </div>
+
+                <div class="analogy-detail-card">
+                    <span class="analogy-badge">Work Management</span>
+                    <div class="analogy-head">Swarming Model</div>
+                    <div class="analogy-desc">Swarms of support instead of passing tickets like hot potato.</div>
+                    <div class="analogy-body">
+                        "Swarming is like a hospital ER Code Blue. When a critical patient arrives, doctors, anesthesiologists, and nurses swarm the bedside together to save the patient (Drop-in Swarm) rather than passing them sequentially between slow departments."
+                    </div>
+                </div>
+
+                <div class="analogy-detail-card">
+                    <span class="analogy-badge">Metrics & Measurement</span>
+                    <div class="analogy-head">Watermelon Metrics</div>
+                    <div class="analogy-desc">SLA dashboards that hide customer anger.</div>
+                    <div class="analogy-body">
+                        "A restaurant promises to serve food in under 10 minutes. The waiter delivers cold, burnt food in 8 minutes. The dashboard reports green (met SLA), but the customer leaves angry (red inside). That is a Watermelon Metric."
+                    </div>
+                </div>
+
+                <div class="analogy-detail-card">
+                    <span class="analogy-badge">Sourcing & Governance</span>
+                    <div class="analogy-head">SIAM (Service Integration and Management)</div>
+                    <div class="analogy-desc">Managing multiple third-party suppliers seamlessly.</div>
+                    <div class="analogy-body">
+                        "A couple getting married hires a DJ, venue, and caterer. Instead of managing all four themselves, they hire a Wedding Planner (SIAM Coordinator) to orchestrate them as a single unified system."
+                    </div>
+                </div>
+
+                <div class="analogy-detail-card">
+                    <span class="analogy-badge">Automation & AI</span>
+                    <div class="analogy-head">RPA vs. AI vs. AIOps</div>
+                    <div class="analogy-desc">Simple automation vs. predictive intelligence.</div>
+                    <div class="analogy-body">
+                        "In a soda factory: RPA is the mechanical arm screwing caps on bottles (repeats rules exactly); AI is the scanner checking for scratch faults; AIOps is the master brain analyzing line vibrations and temperature to schedule preemptive conveyor maintenance."
+                    </div>
+                </div>
+
+                <div class="analogy-detail-card">
+                    <span class="analogy-badge">Workforce Strategy</span>
+                    <div class="analogy-head">Shift-Left Strategy</div>
+                    <div class="analogy-desc">Moving help closer to the customer/first tier.</div>
+                    <div class="analogy-body">
+                        "Placing a clear diagram on hotel safes so guests reset their own code via SMS instantly, rather than waiting 30 minutes for hotel security to bring a physical master key."
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ================= CONCEPT MATCHER ================= -->
+        <section id="matcher-tab" class="tab-content">
+            <div class="matcher-container">
+                <div class="matcher-score-bar">
+                    <span id="matcher-timer">Time: 0s</span>
+                    <span id="matcher-score">Matched: 0 / 6</span>
+                    <button class="btn" id="matcher-reset-btn" style="padding:6px 12px; font-size:0.8rem; border-radius:10px; background-color:var(--text-main); color:white;">Reset</button>
+                </div>
+                
+                <div class="matcher-grid">
+                    <!-- Column Left: Terms -->
+                    <div class="matcher-column" id="terms-column"></div>
+                    <!-- Column Right: Analogies -->
+                    <div class="matcher-column" id="analogies-column"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Sticky Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-tab="flashcards-tab">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+            <span>Flashcards</span>
+        </button>
+        <button class="nav-item" data-tab="analogies-tab">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+            <span>Analogies</span>
+        </button>
+        <button class="nav-item" data-tab="matcher-tab">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7" /></svg>
+            <span>Matcher Game</span>
+        </button>
+    </nav>
+
+    <!-- JS Application Logic -->
+    <script>
+        // Tab switching logic
+        const navItems = document.querySelectorAll('.nav-item');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetTab = item.getAttribute('data-tab');
+                
+                navItems.forEach(nav => nav.classList.remove('active'));
+                tabContents.forEach(tab => tab.classList.remove('active'));
+                
+                item.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+
+                if (targetTab === 'matcher-tab') {
+                    initMatcherGame();
+                }
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Theme Toggle
+        const themeBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('itil-theme', isDark ? 'dark' : 'light');
+            updateThemeUI(isDark);
+        });
+
+        function updateThemeUI(isDark) {
+            if (isDark) {
+                themeText.textContent = 'Light';
+                themeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.364 17.636l-.707.707M18.364 18.364l-.707-.707M6.364 5.636l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />`;
+            } else {
+                themeText.textContent = 'Dark';
+                themeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />`;
+            }
+        }
+
+        const savedTheme = localStorage.getItem('itil-theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            updateThemeUI(true);
+        }
+
+        // Adjust Traditional Switch path
+        const traditionalSwitch = document.getElementById('traditional-switch-btn');
+        traditionalSwitch.href = './index.html';
+
+        // ================= FLASHCARD CONTROLLER =================
+        const cardsData = [
+            { id: 1, category: "Organization & Culture", question: "What is a Functional Structure in simple terms, and what is its big drawback?", answer: "<strong>Meaning:</strong> Grouping teams strictly by job role (e.g., all database guys in one room, all developers in another).\n\n<strong>Big Drawback:</strong> Teams become isolated islands (silos). They don't talk, pass blame, and lose sight of what the actual customer needs." },
+            { id: 2, category: "Measurement", question: "What is a 'Watermelon Metric' and why is it bad?", answer: "<strong>Meaning:</strong> Reports that look green on the outside but are bright red on the inside.\n\n<strong>Why bad:</strong> A support team resolves a ticket in 5 minutes (Green SLA!), but the fix is completely broken, so the user is highly angry (Red satisfaction!). Your dashboard lies to you." },
+            { id: 3, category: "Support Strategy", question: "Explain the three Swarming models in simple words.", answer: "Swarming means a group surrounding a problem to fix it fast instead of passing it like a hot potato:\n\n• <strong>Dispatch Swarm:</strong> Triaging/sorting squad at the door.\n• <strong>Backlog Swarm:</strong> A circle of experts reviewing a stubborn, hard ticket.\n• <strong>Drop-in Swarm:</strong> A rapid-response team assembling for a major system crash." },
+            { id: 4, category: "SIAM Governance", question: "What is SIAM and how does the 'Wedding Planner' explain it?", answer: "<strong>Meaning:</strong> Service Integration and Management.\n\n<strong>Analogy:</strong> If you hire a DJ, florist, and caterer directly for your wedding, managing them all is a nightmare. SIAM is like hiring a **Wedding Planner** (Service Integrator) who governs and coordinates all vendors so you only talk to one person." },
+            { id: 5, category: "Automation", question: "Explain the difference between RPA, AI, and AIOps in simple terms.", answer: "• <strong>RPA (Robotic Process Automation):</strong> A simple software bot that replicates human clicks (like copy-pasting numbers). Rule-based only.\n• <strong>AI (Artificial Intelligence):</strong> Smart systems that learn and spot patterns (like spotting defects in data).\n• <strong>AIOps (AI for Operations):</strong> The ultimate brain analyzing all server logs to predict and prevent system crashes before they happen." },
+            { id: 6, category: "Practices", question: "What is the simple difference between Deployment and Release?", answer: "• <strong>Deployment (Technical):</strong> Physically copying the software code or files onto the production server. The user cannot see it yet.\n• <strong>Release (Business):</strong> Flicking the switch to make those features visible and available for the user to buy or use." },
+            { id: 7, category: "Work Management", question: "Why do we use WIP (Work In Progress) limits?", answer: "<strong>Meaning:</strong> Forcing a team to finish what they started before taking on new tickets.\n\n<strong>Why:</strong> Multitasking and jumping between 10 tickets makes people slow and stressed. WIP limits reduce waste and get tasks done faster." },
+            { id: 8, category: "Optimization Strategy", question: "What is 'Shift-Left' in simple terms?", answer: "<strong>Meaning:</strong> Moving tasks closer to the user or front line.\n\n<strong>Example:</strong> Instead of making a senior database expert reset password tickets, you create a self-service button (Shift-Left) so users do it instantly themselves, saving time and money." },
+            { id: 9, category: "Syllabus Theory", question: "What are T-Shaped Skills in plain English?", answer: "<strong>Meaning:</strong> Being a 'jack of all trades, master of one'.\n\n• The vertical bar (|) is your deep specialty (e.g. expert database admin).\n• The horizontal bar (—) is your basic knowledge of coding, support, and business goals so you can help teammates when they get stuck." },
+            { id: 10, category: "Cultural Safety", question: "What is 'Psychological Safety' and why does the exam care?", answer: "<strong>Meaning:</strong> A team environment where people aren't afraid of being blamed, yelled at, or fired for reporting mistakes.\n\n<strong>Why:</strong> When people feel safe, they report system bugs early and suggest smart ideas, leading to fewer server outages." }
+        ];
+
+        let currentCardIndex = 0;
+        let masteredCards = new Set();
+        let reviewCards = new Set();
+
+        const cardBox = document.getElementById('flashcard-box');
+        const cardContainer = document.getElementById('flashcard-card');
+        const cardBadgeFront = document.getElementById('card-badge-front');
+        const cardTitleFront = document.getElementById('card-title-front');
+        const cardBadgeBack = document.getElementById('card-badge-back');
+        const cardAnswerBack = document.getElementById('card-answer-back');
+        const cardProgress = document.getElementById('flashcard-progress');
+
+        const masteredBtn = document.getElementById('mastered-btn');
+        const reviewBtn = document.getElementById('review-btn');
+
+        function updateCardDisplay() {
+            const currentCard = cardsData[currentCardIndex];
+            cardContainer.classList.remove('is-flipped');
+            
+            setTimeout(() => {
+                cardBadgeFront.textContent = currentCard.category;
+                cardTitleFront.textContent = currentCard.question;
+                
+                cardBadgeBack.textContent = `${currentCard.category} (Explanation)`;
+                cardAnswerBack.innerHTML = currentCard.answer.replace(/\n/g, "<br>");
+                
+                cardProgress.textContent = `Card ${currentCardIndex + 1} of ${cardsData.length} | Mastered: ${masteredCards.size}/${cardsData.length}`;
+            }, 150);
+        }
+
+        cardBox.addEventListener('click', () => {
+            cardContainer.classList.toggle('is-flipped');
+        });
+
+        masteredBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            masteredCards.add(cardsData[currentCardIndex].id);
+            reviewCards.delete(cardsData[currentCardIndex].id);
+            nextCard();
+        });
+
+        reviewBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            reviewCards.add(cardsData[currentCardIndex].id);
+            masteredCards.delete(cardsData[currentCardIndex].id);
+            nextCard();
+        });
+
+        function nextCard() {
+            if (currentCardIndex < cardsData.length - 1) {
+                currentCardIndex++;
+            } else {
+                alert(`🎉 Great Job! You went through all simplified cards! \n\nMastered: ${masteredCards.size}/${cardsData.length}\nNeeds Review: ${reviewCards.size}/${cardsData.length}`);
+                currentCardIndex = 0;
+            }
+            updateCardDisplay();
+        }
+
+        updateCardDisplay();
+
+
+        // ================= CONCEPT MATCHER =================
+        const matchingPairs = [
+            { term: "SIAM Strategy", analogy: "The Wedding Planner coordinating DJ, venue, and catering." },
+            { term: "Watermelon Metric", analogy: "Food delivered in under 10 minutes, but it is cold and burnt." },
+            { term: "Incident Management", analogy: "A paramedic team stabilizing an emergency patient." },
+            { term: "Shift-Left", analogy: "Self-service hotel room safe reset guides." },
+            { term: "Swarming Model", analogy: "A hospital 'Code Blue' crisis squad assembling." },
+            { term: "Deployment Management", analogy: "Moving printed book crates to a locked warehouse." }
+        ];
+
+        let selectedTerm = null;
+        let selectedAnalogy = null;
+        let matchedCount = 0;
+        let timerInterval = null;
+        let gameSeconds = 0;
+
+        const termsCol = document.getElementById('terms-column');
+        const analogiesCol = document.getElementById('analogies-column');
+        const scoreDisplay = document.getElementById('matcher-score');
+        const timerDisplay = document.getElementById('matcher-timer');
+        const resetBtn = document.getElementById('matcher-reset-btn');
+
+        function shuffleArray(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function initMatcherGame() {
+            termsCol.innerHTML = '';
+            analogiesCol.innerHTML = '';
+            matchedCount = 0;
+            selectedTerm = null;
+            selectedAnalogy = null;
+            gameSeconds = 0;
+            scoreDisplay.textContent = `Matched: 0 / ${matchingPairs.length}`;
+            timerDisplay.textContent = `Time: 0s`;
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                gameSeconds++;
+                timerDisplay.textContent = `Time: ${gameSeconds}s`;
+            }, 1000);
+
+            const shuffledTerms = shuffleArray([...matchingPairs]);
+            const shuffledAnalogies = shuffleArray([...matchingPairs]);
+
+            shuffledTerms.forEach(pair => {
+                const card = document.createElement('div');
+                card.classList.add('matcher-card');
+                card.textContent = pair.term;
+                card.setAttribute('data-term', pair.term);
+                card.addEventListener('click', () => handleTermSelect(card));
+                termsCol.appendChild(card);
+            });
+
+            shuffledAnalogies.forEach(pair => {
+                const card = document.createElement('div');
+                card.classList.add('matcher-card');
+                card.textContent = pair.analogy;
+                card.setAttribute('data-analogy', pair.analogy);
+                card.addEventListener('click', () => handleAnalogySelect(card));
+                analogiesCol.appendChild(card);
+            });
+        }
+
+        function handleTermSelect(card) {
+            if (card.classList.contains('matched')) return;
+
+            const siblings = termsCol.querySelectorAll('.matcher-card');
+            siblings.forEach(s => s.classList.remove('selected'));
+            
+            card.classList.add('selected');
+            selectedTerm = card;
+
+            checkMatch();
+        }
+
+        function handleAnalogySelect(card) {
+            if (card.classList.contains('matched')) return;
+
+            const siblings = analogiesCol.querySelectorAll('.matcher-card');
+            siblings.forEach(s => s.classList.remove('selected'));
+            
+            card.classList.add('selected');
+            selectedAnalogy = card;
+
+            checkMatch();
+        }
+
+        function checkMatch() {
+            if (selectedTerm && selectedAnalogy) {
+                const termVal = selectedTerm.getAttribute('data-term');
+                const analogyVal = selectedAnalogy.getAttribute('data-analogy');
+
+                const exactPair = matchingPairs.find(p => p.term === termVal && p.analogy === analogyVal);
+
+                if (exactPair) {
+                    selectedTerm.classList.remove('selected');
+                    selectedAnalogy.classList.remove('selected');
+                    selectedTerm.classList.add('matched');
+                    selectedAnalogy.classList.add('matched');
+
+                    selectedTerm = null;
+                    selectedAnalogy = null;
+                    matchedCount++;
+                    scoreDisplay.textContent = `Matched: ${matchedCount} / ${matchingPairs.length}`;
+
+                    if (matchedCount === matchingPairs.length) {
+                        clearInterval(timerInterval);
+                        setTimeout(() => {
+                            alert(`🎉 Awesome! You matched all terms to analogies in ${gameSeconds} seconds!`);
+                        }, 300);
+                    }
+                } else {
+                    const termCard = selectedTerm;
+                    const analogyCard = selectedAnalogy;
+                    
+                    termCard.classList.add('error');
+                    analogyCard.classList.add('error');
+
+                    selectedTerm = null;
+                    selectedAnalogy = null;
+
+                    setTimeout(() => {
+                        termCard.classList.remove('error', 'selected');
+                        analogyCard.classList.remove('error', 'selected');
+                    }, 500);
+                }
+            }
+        }
+
+        resetBtn.addEventListener('click', initMatcherGame);
+
+    </script>
+</body>
+</html>
