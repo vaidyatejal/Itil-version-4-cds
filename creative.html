@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ITIL 4 CDS Simplified: Creative Review Arena</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         :root {
             --primary-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             --accent-color: #06b6d4; /* Vibrant teal */
@@ -42,12 +49,16 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.65;
             padding-bottom: 80px;
             transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        h1, h2, h3, .flashcard-title, .flashcard-badge, .analogy-head, .analogy-badge, .btn-game, .nav-item {
+            font-family: 'Outfit', sans-serif;
         }
 
         /* Sticky Header */
@@ -488,6 +499,64 @@
         .nav-item.active svg {
             transform: scale(1.1);
         }
+
+        /* Custom Modal Styling */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeInModal 0.25s ease forwards;
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .custom-modal-content {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 32px;
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            animation: slideInModal 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes slideInModal {
+            from { transform: scale(0.9) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .modal-icon {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            animation: bounce 1s infinite alternate;
+            display: inline-block;
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-8px); }
+        }
+        .modal-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        .modal-body {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
@@ -772,7 +841,12 @@
             if (currentCardIndex < cardsData.length - 1) {
                 currentCardIndex++;
             } else {
-                alert(`🎉 Great Job! You went through all simplified cards! \n\nMastered: ${masteredCards.size}/${cardsData.length}\nNeeds Review: ${reviewCards.size}/${cardsData.length}`);
+                showCustomModal(
+                    "🎓",
+                    "Flashcards Completed!",
+                    `Incredible effort! You went through all simplified study cards.<br><br><strong>Mastered:</strong> ${masteredCards.size}/${cardsData.length}<br><strong>Needs Review:</strong> ${reviewCards.size}/${cardsData.length}`,
+                    "Restart Deck"
+                );
                 currentCardIndex = 0;
             }
             updateCardDisplay();
@@ -890,7 +964,12 @@
                     if (matchedCount === matchingPairs.length) {
                         clearInterval(timerInterval);
                         setTimeout(() => {
-                            alert(`🎉 Awesome! You matched all terms to analogies in ${gameSeconds} seconds!`);
+                            showCustomModal(
+                                "🏆", 
+                                "Game Completed!", 
+                                `Sensational! You successfully matched all key ITIL 4 terms to their real-world analogies in **${gameSeconds} seconds**!`,
+                                "Play Again"
+                            );
                         }, 300);
                     }
                 } else {
@@ -913,6 +992,38 @@
 
         resetBtn.addEventListener('click', initMatcherGame);
 
+        // Reusable Custom Modal Logic
+        const customModal = document.getElementById('custom-modal');
+        const modalIcon = document.getElementById('modal-icon');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+
+        function showCustomModal(icon, title, bodyText, buttonText = "Awesome!") {
+            modalIcon.textContent = icon;
+            modalTitle.textContent = title;
+            modalBody.innerHTML = bodyText;
+            modalCloseBtn.textContent = buttonText;
+            customModal.style.display = 'flex';
+        }
+
+        modalCloseBtn.addEventListener('click', () => {
+            customModal.style.display = 'none';
+            if (modalTitle.textContent === "Game Completed!") {
+                initMatcherGame(); // restart the game on close
+            }
+        });
+
     </script>
+
+    <!-- Beautiful Custom Modal Overlay -->
+    <div class="custom-modal-overlay" id="custom-modal">
+        <div class="custom-modal-content">
+            <div class="modal-icon" id="modal-icon">🎉</div>
+            <h2 class="modal-title" id="modal-title">Success!</h2>
+            <p class="modal-body" id="modal-body">Your message goes here.</p>
+            <button class="btn-game btn-mastered" id="modal-close-btn" style="margin: 20px auto 0 auto; max-width: 200px;">Awesome!</button>
+        </div>
+    </div>
 </body>
 </html>

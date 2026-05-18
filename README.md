@@ -1,16 +1,53 @@
-# React + Vite
+# ITIL 4 Specialist: Create, Deliver and Support (CDS) — Master Study Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the **ITIL 4 Specialist CDS Master Study Portal**! This is a feature-rich, high-performance, single-page application (SPA) optimized for mobile, desktop, and tablet. It is designed to help professionals master the ITIL 4 CDS syllabus and pass their certification exam on the first attempt.
 
-Currently, two official plugins are available:
+## 🌟 Key Application Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+* 📖 **Master Study Guide:** Structurally organized into 6 core syllabus units containing exam-critical summaries, comparison tables, and real-world analogies.
+* 🧠 **Tactile 3D Flashcards:** Interactive review deck with automatic mastering and tracking.
+* 🎮 **Concept Matcher Game:** Dynamic interactive matching engine to verify core definitions against scenarios under time tracking.
+* 📝 **Scenario Mock Exam:** Comprehensive, Bloom's Level 2 & 3 scenario-based practice questions complete with detailed explanations and rationales for every option.
+* 🔍 **Global Interactive Search:** Instant search functionality filtering study content and glossary terms in real-time.
+* 📊 **Checklist & Progress Tracker:** Auto-saving persistent progress indicator showing your unit completion rate.
+* 🌗 **Tactical Dark Mode:** Curated HSL-tailored theme toggle preserving eye comfort during late-night study sessions.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Technology Stack & Architecture
 
-## Expanding the ESLint configuration
+* **Core:** Semantic HTML5, Vanilla JavaScript (ES6+), HSL CSS custom variables.
+* **Hosting:** Hosted 100% Free Forever on **GitHub Pages**.
+* **Automation (CI/CD):** Equipped with a custom GitHub Actions workflow (`.github/workflows/deploy.yml`) that automatically deploys your latest commits to the live CDN within seconds.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🚀 Getting Started & Local Development
+
+### Running the App Locally
+Since the portal is built using pure static technologies, it is exceptionally lightweight and requires zero installations or dependencies:
+1. Double-click [index.html](./index.html) to open the study portal in your default web browser.
+2. Click the **"Creative Mode"** button to jump into the flashcards and game-based [creative.html](./creative.html) page.
+
+---
+
+## ⚙️ CI/CD & Deployment Instructions
+
+The repository is fully integrated with a **GitHub Actions Pipeline**.
+
+### Deploying Changes
+Whenever you update content inside `index.html` or `creative.html`, publish them to the web with:
+
+```bash
+# 1. Add all modifications
+git add .
+
+# 2. Commit your progress
+git commit -m "Add custom analogies and clarify SIAM concepts"
+
+# 3. Push to make it live instantly
+git push origin main
+```
+
+Your live, production-grade application will update automatically at:  
+**`https://vaidyatejal.github.io/Itil-version-4-cds/`**

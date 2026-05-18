@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ITIL 4 Specialist: Create, Deliver and Support (CDS) - Master Study App</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         :root {
             --primary-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             --accent-color: #06b6d4; /* Vibrant teal */
@@ -42,12 +49,16 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.65;
             padding-bottom: 80px; /* space for mobile sticky nav */
             transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        h1, h2, h3, .module-title, .theme-toggle-btn, .mode-switch-btn, .btn, .nav-item {
+            font-family: 'Outfit', sans-serif;
         }
 
         /* Top Progress Bar & Header */
@@ -207,6 +218,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-8px); }
+        }
+
         /* Card styles for modules */
         .module-card {
             background-color: var(--card-bg);
@@ -215,7 +231,13 @@
             margin-bottom: 24px;
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border-color);
-            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .module-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-glow);
         }
 
         .module-header {
@@ -1289,6 +1311,33 @@
                 </div>
             </div>
 
+            <!-- Custom Interactive Result Card -->
+            <div id="quiz-result-card" style="display: none; margin-top: 0;" class="quiz-container">
+                <div style="text-align: center; padding: 10px 0;">
+                    <div id="result-icon" style="font-size: 3.5rem; margin-bottom: 12px; animation: bounce 1s infinite alternate; display: inline-block;">🎉</div>
+                    <h2 id="result-title" style="font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.02em;">Exam Completed!</h2>
+                    <p id="result-subtitle" style="font-size: 1rem; color: var(--text-muted); margin-bottom: 24px;">Here is your performance report:</p>
+                    
+                    <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 24px; flex-wrap: wrap;">
+                        <div style="background: rgba(6, 182, 212, 0.05); padding: 14px 24px; border-radius: 16px; border: 1px solid rgba(6, 182, 212, 0.1); min-width: 120px;">
+                            <div id="result-percentage" style="font-size: 2.2rem; font-weight: 800; color: var(--accent-color);">80%</div>
+                            <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-top: 2px;">Final Score</div>
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.05); padding: 14px 24px; border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.1); min-width: 120px;">
+                            <div id="result-status-text" style="font-size: 2.2rem; font-weight: 800; color: var(--success-color);">PASS</div>
+                            <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-top: 2px;">Status</div>
+                        </div>
+                    </div>
+                    
+                    <p id="result-commentary" style="max-width: 480px; margin: 0 auto 24px auto; font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">Excellent job! You have surpassed the 70% passing threshold and demonstrated strong proficiency in ITIL 4 Create, Deliver and Support concepts.</p>
+                    
+                    <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                        <button class="btn" id="result-retake-btn" style="margin: 0 auto;">Retake Exam</button>
+                        <button class="btn btn-outline" id="result-review-btn" style="margin: 0 auto;">Review Answers</button>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
 
@@ -1819,10 +1868,90 @@
                     nextBtn.disabled = gradedQuestions[currentQuestion] ? false : true;
                     nextBtn.textContent = gradedQuestions[currentQuestion] ? 'Next Question' : 'Submit Answer';
                 } else {
-                    // Show final report card
-                    alert(`Congratulations! You completed the ITIL 4 CDS Mock Exam.\n\nFinal Score: ${score}/10 (${score >= 7 ? 'PASS' : 'FAIL'} - Passing threshold is 70%)\n\nReview your rationales using the "Previous" buttons.`);
+                    // Show final report card natively
+                    showQuizResultCard();
                 }
             }
+        });
+
+        // Interactive Result Card Logic
+        const resultCard = document.getElementById('quiz-result-card');
+        const questionFlow = document.getElementById('question-flow');
+        const quizActions = document.querySelector('.quiz-actions');
+        const resultPercentage = document.getElementById('result-percentage');
+        const resultStatusText = document.getElementById('result-status-text');
+        const resultIcon = document.getElementById('result-icon');
+        const resultCommentary = document.getElementById('result-commentary');
+        
+        function showQuizResultCard() {
+            // Hide questions & navigation buttons
+            questionFlow.style.display = 'none';
+            quizActions.style.display = 'none';
+            
+            const pct = Math.round((score / 10) * 100);
+            resultPercentage.textContent = pct + '%';
+            
+            if (pct >= 70) {
+                resultStatusText.textContent = 'PASS';
+                resultStatusText.style.color = 'var(--success-color)';
+                resultIcon.textContent = '🎉';
+                resultCommentary.innerHTML = `<strong>Congratulations!</strong> You achieved a stellar score of ${pct}%, comfortably clearing the official 70% passing threshold. You are fully prepared to Create, Deliver, and Support!`;
+            } else {
+                resultStatusText.textContent = 'FAIL';
+                resultStatusText.style.color = 'var(--error-color)';
+                resultIcon.textContent = '📚';
+                resultCommentary.innerHTML = `<strong>Keep studying!</strong> You scored ${pct}%. The passing threshold is 70%. Review the rationales of your incorrect answers using the button below or read through the study guide again. You've got this!`;
+            }
+            
+            resultCard.style.display = 'block';
+            resultCard.style.animation = 'fadeIn 0.5s ease forwards';
+        }
+        
+        document.getElementById('result-retake-btn').addEventListener('click', () => {
+            // Reset state
+            score = 0;
+            currentQuestion = 1;
+            gradedQuestions = {};
+            selectedOption = null;
+            scoreDisplay.textContent = 'Score: 0/0';
+            
+            // Clean option styles & feedback boxes
+            document.querySelectorAll('.option-item').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+            document.querySelectorAll('.feedback-box').forEach(box => {
+                box.classList.remove('visible');
+                box.innerHTML = '';
+            });
+            
+            // Re-show first card
+            qCards.forEach(c => c.classList.remove('active'));
+            qCards[0].classList.add('active');
+            
+            // Toggle view
+            resultCard.style.display = 'none';
+            questionFlow.style.display = 'block';
+            quizActions.style.display = 'flex';
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            nextBtn.textContent = 'Submit Answer';
+        });
+        
+        document.getElementById('result-review-btn').addEventListener('click', () => {
+            // Simply hide report card and show review flow
+            resultCard.style.display = 'none';
+            questionFlow.style.display = 'block';
+            quizActions.style.display = 'flex';
+            
+            // Force first card active so they can navigate
+            currentQuestion = 1;
+            qCards.forEach(c => c.classList.remove('active'));
+            qCards[0].classList.add('active');
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = false;
+            nextBtn.textContent = 'Next Question';
         });
 
         // Initialize quiz button state
